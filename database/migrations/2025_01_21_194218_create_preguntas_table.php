@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('preguntas', function (Blueprint $table) {
             $table->id();
-            $table->string('texto');
+            $table->string('texto', 200);
             $table->enum('tipo', ['boolean', 'test'])->default('test');
             $table->timestamps();
         });
