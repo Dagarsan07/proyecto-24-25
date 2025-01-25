@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('first_name', 30);
             $table->string('surname_1', 30);
-            $table->string('surname_2', 30);
+            $table->string('surname_2', 30)->nullable();
             $table->foreignId('id_rol')
                 ->constrained('roles', 'id', 'users_rol_id')
                 ->onDelete('cascade');

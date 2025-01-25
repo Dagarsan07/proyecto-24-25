@@ -1,32 +1,85 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import GuestLayout from "@/Layouts/GuestLayout.vue";
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 
 const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
+    first_name: "",
+    surname_1: "",
+    surname_2: "",
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
 });
 
 const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
+    form.post(route("register"), {
+        onFinish: () => form.reset("password", "password_confirmation"),
     });
 };
 </script>
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
+        <Head title="Registrarse" />
 
         <form @submit.prevent="submit">
+            <div class="grid grid-cols-4 gap-4 mb-4">
+                <div class="col-span-4">
+                    <InputLabel for="first_name" value="Nombre*" />
+
+                    <TextInput
+                        id="first_name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="form.first_name"
+                        required
+                        autofocus
+                        autocomplete="name"
+                    />
+
+                    <InputError
+                        class="mt-2"
+                        :message="form.errors.first_name"
+                    />
+                </div>
+                <div class="col-span-2">
+                    <InputLabel for="surname_1" value="Apellido 1*" />
+
+                    <TextInput
+                        id="surname_1"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="form.surname_1"
+                        required
+                        autofocus
+                        autocomplete="name"
+                    />
+
+                    <InputError class="mt-2" :message="form.errors.surname_1" />
+                </div>
+                <div class="col-span-2">
+                    <InputLabel for="surname_2" value="Apellido 2" />
+
+                    <TextInput
+                        id="surname_2"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="form.surname_2"
+                        autofocus
+                        autocomplete="name"
+                    />
+
+                    <InputError class="mt-2" :message="form.errors.surname_2" />
+                </div>
+            </div>
+
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" value="Nombre de usuario*" />
 
                 <TextInput
                     id="name"
@@ -42,7 +95,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Email*" />
 
                 <TextInput
                     id="email"
@@ -57,7 +110,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="Contraseña*" />
 
                 <TextInput
                     id="password"
@@ -74,7 +127,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password"
+                    value="Confirmar Contraseña*"
                 />
 
                 <TextInput
@@ -97,7 +150,7 @@ const submit = () => {
                     :href="route('login')"
                     class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                    Already registered?
+                    ¿Ya tienes una cuenta?
                 </Link>
 
                 <PrimaryButton
@@ -105,7 +158,7 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Register
+                    Registrarse
                 </PrimaryButton>
             </div>
         </form>

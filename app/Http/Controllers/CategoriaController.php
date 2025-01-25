@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Categoria;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CategoriaController extends Controller
 {
@@ -14,7 +16,9 @@ class CategoriaController extends Controller
      * @return JsonResponse Respuesta JSON con la lista de categorías.
      */
     public function index() {
-        return response()->json(Categoria::all());
+        $categorias = Categoria::all();
+        Debugbar::debug($categorias);
+        return Inertia::render('Categorias/Listado', ['categorias' => $categorias]);
     }
 
     /**
