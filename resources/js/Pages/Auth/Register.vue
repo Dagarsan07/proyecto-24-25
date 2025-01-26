@@ -38,7 +38,6 @@ const submit = () => {
                         class="mt-1 block w-full"
                         v-model="form.first_name"
                         required
-                        autofocus
                         autocomplete="name"
                     />
 
@@ -56,7 +55,6 @@ const submit = () => {
                         class="mt-1 block w-full"
                         v-model="form.surname_1"
                         required
-                        autofocus
                         autocomplete="name"
                     />
 
@@ -70,7 +68,6 @@ const submit = () => {
                         type="text"
                         class="mt-1 block w-full"
                         v-model="form.surname_2"
-                        autofocus
                         autocomplete="name"
                     />
 
@@ -87,7 +84,6 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.name"
                     required
-                    autofocus
                     autocomplete="name"
                 />
 

@@ -16,31 +16,26 @@ class CategoriaSeeder extends Seeder
         DB::table('categorias')->insert([
             'codigo' => 'LANGMARC',
             'nombre' => 'Lenguaje de marcas',
-            'descripcion' => 'A'
         ]);
 
         DB::table('categorias')->insert([
             'codigo' => 'PROG',
             'nombre' => 'Programación',
-            'descripcion' => 'B'
         ]);
 
         DB::table('categorias')->insert([
             'codigo' => 'BBDD',
             'nombre' => 'Bases de datos',
-            'descripcion' => 'C'
         ]);
 
         DB::table('categorias')->insert([
             'codigo' => 'DEVENV',
             'nombre' => 'Entornos de desarrollo',
-            'descripcion' => 'C'
         ]);
 
         DB::table('categorias')->insert([
             'codigo' => 'SYSTEM',
             'nombre' => 'Sistemas informáticos',
-            'descripcion' => 'C'
         ]);
     }
 }

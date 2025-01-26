@@ -13,7 +13,7 @@ class CategoriaController extends Controller
 {
     /**
      * Obtiene todas las categorías y las devuelve.
-     * @return JsonResponse Respuesta JSON con la lista de categorías.
+     * @return Inertia\Response Carga listado de categorias.
      */
     public function index() {
         $categorias = Categoria::all();
@@ -22,68 +22,67 @@ class CategoriaController extends Controller
     }
 
     /**
+     * Carga el formulario de creación.
+     */
+    public function create() {
+        return Inertia::render('Categorias/Formulario', ['categoria' => null]);
+    }
+
+    /**
      * Obtiene una categoría mediante su id y devuelve sus datos.
      * @param int $id
-     * @return JsonResponse Respuesta JSON con la categoría.
      */
-    public function show($id) {
+    public function edit($id) {
         $categoria = Categoria::findOrFail($id);
-        return response()->json($categoria);
+        return Inertia::render('Categorias/Formulario', ['categoria' => $categoria]);
     }
 
     /**
      * Crea una nueva categoría.
      * @param Request $request
-     * @return JsonResponse Respuesta JSON con mensaje y código de estado.
      */
     public function store(Request $request) {
         $validated = $request->validate([
             'codigo' => 'required|string|max:10|unique:categorias',
-            'nombre' => 'required|string|min:4|max:30',
-            'descripcion' => 'string|max:300|min:10'
+            'nombre' => 'required|string|min:4|max:100'
         ]);
 
-        Categoria::create([
+        $categoria = Categoria::create([
             'codigo' => $validated['codigo'],
-            'nombre' => $validated['nombre'],
-            'descripcion' => $validated['descripcion']
+            'nombre' => $validated['nombre']
         ]);
 
-        return response()->json(
-            ['message' => 'La categoria se ha creado correctamente.'], 201
-        );
+        return redirect()->route('categorias.index');
     }
 
     /**
      * Actualiza los datos de una categoría.
      * @param Request $request
      * @param int $id
-     * @return JsonResponse
      */
     public function update(Request $request, $id) {
         $categoria = Categoria::findOrFail($id);
-
         $validated = $request->validate([
-            'codigo' => 'required|string|max:10|unique:categorias',
-            'nombre' => 'required|string|min:4|max:30',
-            'descripcion' => 'string|max:300|min:10'
+            'codigo' => 'required|string|max:10',
+            'nombre' => 'required|string|min:4|max:100'
         ]);
 
-        $categoria->update($validated);
-        return response()->json($categoria);
+        $categoria->update([
+            'codigo' => $validated['codigo'],
+            'nombre' => $validated['nombre']
+        ]);
+        Debugbar::debug($categoria);
+        return redirect()->route('categorias.index');
     }
 
     /**
      * Elimina la categoría.
      *
      * @param int $id
-     * @return JsonResponse
      */
     public function delete($id) {
         $categoria = Categoria::findOrFail($id);
         $categoria->delete();
-        return response()->json([
-            'message' => 'Categoría eliminada correctamente. También se han borrado las preguntas y sus respectivas respuestas asociadas a esta.'
-        ]);
+        return redirect()->route('categorias.index');
     }
 }
