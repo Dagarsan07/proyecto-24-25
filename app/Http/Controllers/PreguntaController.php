@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Categoria;
 use App\Models\Pregunta;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class PreguntaController extends Controller
 {
@@ -13,18 +16,22 @@ class PreguntaController extends Controller
      * Obtiene todas las preguntas y las devuelve.
      * @return JsonResponse Respuesta JSON con la lista de preguntas.
      */
-    public function index() {
-        return response()->json(Pregunta::all());
-    }
+    // public function index($id) {
+    //     return response()->json(Pregunta::all());
+    // }
 
     /**
      * Obtiene una pregunta mediante su id y devuelve sus datos.
      * @param int $id
      * @return JsonResponse Respuesta JSON con la pregunta.
      */
-    public function show($id) {
-        $pregunta = Pregunta::findOrFail($id);
-        return response()->json($pregunta);
+    public function create($id) {
+        return Inertia::render('Preguntas/Formulario', ['pregunta' => null, 'categoria_id' => $id]);
+    }
+
+    public function edit($idC, $idP) {
+        $pregunta = Pregunta::findOrFail($idP);
+        return Inertia::render('Preguntas/Formulario', ['pregunta' => $pregunta, 'categoria_id' => $idP]);
     }
 
     /**
@@ -32,7 +39,7 @@ class PreguntaController extends Controller
      * @param Request $request
      * @return JsonResponse Respuesta JSON con mensaje y código de estado.
      */
-    public function store(Request $request) {
+    public function store(Request $request, $id) {
         $validated = $request->validate([
             'id_categoria' => 'required',
             'texto' => 'required|string|max:200|min:30',
@@ -52,18 +59,18 @@ class PreguntaController extends Controller
 
     /**
      * Devuelve las preguntas de la categoria especificada.
-     * @param string $codigo
+     * @param string $id
      * @return JsonResponse Respuesta JSON con la lista de categorías.
      */
-    public function filterByCategoriaCodigo($codigo) {
-        $categoria = Categoria::where('codigo', $codigo)->first();
+    public function filterByCategoriaId($id) {
+        $categoria = Categoria::findOrFail($id);
 
         if (!$categoria) {
             return response()->json(['message' => 'No existe la categoría indicada', 404]);
         }
-
-        $preguntas = $categoria->preguntas;
-        return response()->json($preguntas);
+        $preguntas = DB::table('preguntas')->where('id_categoria', $id)->get();
+        Debugbar::debug($preguntas);
+        return Inertia::render('Preguntas/Listado', ['categoria_id' => $id, 'preguntas' => $preguntas]);
     }
 
     /**

@@ -14,9 +14,10 @@ Route::delete('/categorias/{id}', [CategoriaController::class, 'delete'])->name(
 /** CategoriaController - End */
 
 /** PreguntaController - Init */
-Route::get('/preguntas', [PreguntaController::class, 'index'])->name('preguntas.index');
-Route::post('/preguntas', [PreguntaController::class, 'store'])->name('preguntas.store');
-Route::get('/preguntas/{id}', [PreguntaController::class, 'show'])->name('preguntas.show');
-Route::post('/preguntas/{id}', [PreguntaController::class, 'update'])->name('preguntas.update');
-Route::delete('/preguntas/{id}', [PreguntaController::class, 'delete'])->name('preguntas.delete');
+Route::get('/categorias/{id}/preguntas', [PreguntaController::class, 'filterByCategoriaId'])->name('preguntas.index');
+Route::get('/categorias/{id}/preguntas/create', [PreguntaController::class, 'create'])->name('preguntas.create');
+Route::post('/categorias/{id}/preguntas', [PreguntaController::class, 'store'])->name('preguntas.store');
+Route::get('/categorias/{idC}/preguntas/{idP}/edit', [PreguntaController::class, 'edit'])->name('preguntas.edit');
+Route::post('/categorias/{idC}/preguntas/{idP}', [PreguntaController::class, 'update'])->name('preguntas.update');
+Route::delete('/categorias/{idC}/preguntas/{idP}', [PreguntaController::class, 'delete'])->name('preguntas.delete');
 /** PreguntaController - End */

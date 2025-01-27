@@ -8,7 +8,6 @@ import { Link } from "@inertiajs/vue3";
 
 const showingNavigationDropdown = ref(false);
 </script>
-
 <template>
     <div>
         <div class="min-h-screen bg-gray-100">
@@ -186,9 +185,7 @@ const showingNavigationDropdown = ref(false);
             </header>
 
             <!-- Page Content -->
-            <main>
-                <slot />
-            </main>
+            <main></main>
         </div>
     </div>
 </template>
