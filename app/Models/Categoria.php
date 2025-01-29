@@ -10,7 +10,7 @@ class Categoria extends Model
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = ['codigo', 'nombre', 'descripcion'];
+    protected $fillable = ['codigo', 'nombre'];
 
     public function preguntas() {
         return $this->hasMany(Pregunta::class);

@@ -1,16 +1,12 @@
 <script setup>
-import { computed, ref } from "vue";
-import ApplicationLogo from "@/Components/ApplicationLogo.vue";
+import { ref } from "vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
-import { Link, usePage } from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
 
 const showingNavigationDropdown = ref(false);
-const page = usePage();
-const userLogged = computed(() => page.props.auth.user);
-console.log(userLogged.value);
 </script>
 
 <template>
@@ -35,43 +31,20 @@ console.log(userLogged.value);
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('inicio')"
-                                    :active="route().current('inicio')"
-                                >
-                                    Inicio
-                                </NavLink>
-                                <NavLink
-                                    :href="route('categorias.seleccionar')"
+                                    :href="route('categorias.index')"
                                     :active="
-                                        route().current(
-                                            'categorias.seleccionar'
-                                        ) || route().current('partida')
+                                        route().current('categorias.index') ||
+                                        route().current('preguntas.index')
                                     "
                                 >
-                                    Jugar
-                                </NavLink>
-                                <NavLink
-                                    v-if="userLogged"
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
-                                >
-                                    Clasificación
-                                </NavLink>
-                                <NavLink
-                                    :href="route('info')"
-                                    :active="route().current('info')"
-                                >
-                                    Información
+                                    Categorias y preguntas
                                 </NavLink>
                             </div>
                         </div>
 
-                        <div class="hidden sm:ms-6 sm:flex">
+                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
                             <!-- Settings Dropdown -->
-                            <div
-                                class="relative ms-3 self-center"
-                                v-if="userLogged"
-                            >
+                            <div class="relative ms-3">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -79,11 +52,7 @@ console.log(userLogged.value);
                                                 type="button"
                                                 class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
-                                                {{
-                                                    userLogged != null
-                                                        ? userLogged.name
-                                                        : ""
-                                                }}
+                                                {{ $page.props.auth.user.name }}
 
                                                 <svg
                                                     class="-me-0.5 ms-2 h-4 w-4"
@@ -116,21 +85,6 @@ console.log(userLogged.value);
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
-                            </div>
-
-                            <div
-                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
-                            >
-                                <NavLink
-                                    v-if="!userLogged"
-                                    :href="route('login')"
-                                    >Iniciar sesión</NavLink
-                                >
-                                <NavLink
-                                    v-if="!userLogged"
-                                    :href="route('register')"
-                                    >Registrarse</NavLink
-                                >
                             </div>
                         </div>
 
@@ -187,31 +141,13 @@ console.log(userLogged.value);
                 >
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            :href="route('inicio')"
-                            :active="route().current('inicio')"
-                        >
-                            Inicio
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            :href="route('dashboard')"
+                            :href="route('categorias.index')"
                             :active="
-                                route().current('categorias.seleccionar') ||
-                                route().current('partida')
+                                route().current('categorias.index') ||
+                                route().current('preguntas.index')
                             "
                         >
-                            Jugar
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
-                        >
-                            Clasificación
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            :href="route('info')"
-                            :active="route().current('info')"
-                        >
-                            Información
+                            Categorias y preguntas
                         </ResponsiveNavLink>
                     </div>
 
@@ -219,10 +155,10 @@ console.log(userLogged.value);
                     <div class="border-t border-gray-200 pb-1 pt-4">
                         <div class="px-4">
                             <div class="text-base font-medium text-gray-800">
-                                {{ userLogged != null ? userLogged.name : "" }}
+                                {{ $page.props.auth.user.name }}
                             </div>
                             <div class="text-sm font-medium text-gray-500">
-                                {{ userLogged != null ? userLogged.email : "" }}
+                                {{ $page.props.auth.user.email }}
                             </div>
                         </div>
 
