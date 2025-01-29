@@ -41,8 +41,12 @@ console.log(userLogged.value);
                                     Inicio
                                 </NavLink>
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('categorias.seleccionar')"
+                                    :active="
+                                        route().current(
+                                            'categorias.seleccionar'
+                                        ) || route().current('partida')
+                                    "
                                 >
                                     Jugar
                                 </NavLink>
@@ -54,8 +58,8 @@ console.log(userLogged.value);
                                     Clasificación
                                 </NavLink>
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('info')"
+                                    :active="route().current('info')"
                                 >
                                     Información
                                 </NavLink>
@@ -183,28 +187,31 @@ console.log(userLogged.value);
                 >
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('inicio')"
+                            :active="route().current('inicio')"
                         >
                             Inicio
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :active="
+                                route().current('categorias.seleccionar') ||
+                                route().current('partida')
+                            "
                         >
-                            Inicio
+                            Jugar
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >
-                            Inicio
+                            Clasificación
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('info')"
+                            :active="route().current('info')"
                         >
-                            Inicio
+                            Información
                         </ResponsiveNavLink>
                     </div>
 
@@ -221,14 +228,14 @@ console.log(userLogged.value);
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
+                                Perfil
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 :href="route('logout')"
                                 method="post"
                                 as="button"
                             >
-                                Log Out
+                                Cerrar sesión
                             </ResponsiveNavLink>
                         </div>
                     </div>

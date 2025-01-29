@@ -12,6 +12,9 @@ defineProps({
     status: {
         type: String,
     },
+    canDelete: {
+        type: Boolean,
+    },
 });
 </script>
 
@@ -40,7 +43,7 @@ defineProps({
                 </div>
 
                 <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                    <DeleteUserForm class="max-w-xl" />
+                    <DeleteUserForm class="max-w-xl" :can-delete="canDelete" />
                 </div>
             </div>
         </div>

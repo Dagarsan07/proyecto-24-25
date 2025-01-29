@@ -28,4 +28,5 @@ Route::get('/categorias/seleccionar', [PartidaController::class, 'seleccionarCat
 Route::post('/partida/iniciar', [PartidaController::class, 'iniciarPartida'])->name('partida.iniciar');
 Route::get('/partida', [PartidaController::class, 'index'])->name('partida');
 Route::post('/partida', [PartidaController::class, 'store'])->name('partida.store');
+Route::get('/clasificacion', [PartidaController::class, 'rankingGlobal'])->name('clasificacion');
 /** PartidaController - End */

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,9 +20,18 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $canDelete = null;
+        $superAdmins = User::where('id_rol', 1)->get();
+
+        if ($superAdmins->count() == 1 && Auth::user()->id_rol == 1) {
+            $canDelete = false;
+        } else {
+            $canDelete = true;
+        }
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'canDelete' => $canDelete
         ]);
     }
 

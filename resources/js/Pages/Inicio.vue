@@ -1,14 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import Dropdown from "@/Components/Dropdown.vue";
-import DropdownLink from "@/Components/DropdownLink.vue";
-import NavLink from "@/Components/NavLink.vue";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Link, Head } from "@inertiajs/vue3";
-
-const showingNavigationDropdown = ref(false);
 </script>
 <template>
     <Head title="Inicio" />
@@ -44,7 +37,7 @@ const showingNavigationDropdown = ref(false);
                     <!-- Bloque: Iniciar Sesión -->
                     <Link
                         class="bg-blue-500 text-white p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition transform hover:scale-105"
-                        :href="route('dashboard')"
+                        :href="route('login')"
                     >
                         <h2 class="text-xl font-semibold">Iniciar Sesión</h2>
                         <p class="mt-2">
@@ -56,7 +49,7 @@ const showingNavigationDropdown = ref(false);
                     <!-- Bloque: Registrarse -->
                     <Link
                         class="bg-blue-500 text-white p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition transform hover:scale-105"
-                        :href="route('dashboard')"
+                        :href="route('register')"
                     >
                         <h2 class="text-xl font-semibold">Registrarse</h2>
                         <p class="mt-2">
@@ -68,7 +61,7 @@ const showingNavigationDropdown = ref(false);
                     <!-- Bloque: Información -->
                     <Link
                         class="bg-blue-500 text-white p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition transform hover:scale-105"
-                        :href="route('dashboard')"
+                        :href="route('info')"
                     >
                         <h2 class="text-xl font-semibold">Información</h2>
                         <p class="mt-2">
