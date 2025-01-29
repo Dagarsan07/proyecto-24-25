@@ -27,45 +27,13 @@ const showingNavigationDropdown = ref(false);
                     que eres digno de entrar en la familia hiberus
                 </p>
 
-                <!-- <div class="grid grid-cols-2 lg:grid-cols-4">
-                    <div class="flex flex-col col-span-2 lg:col-span-1">
-                        <p>Pulse aquí para comenzar una partida</p>
-                        <Link :href="route('dashboard')">
-                            <PrimaryButton>Jugar</PrimaryButton>
-                        </Link>
-                    </div>
-                    <div class="flex flex-col col-span-2 lg:col-span-1">
-                        <p>
-                            Inicie sesión para guardar los resultados de sus
-                            partidas
-                        </p>
-                        <Link :href="route('dashboard')">
-                            <PrimaryButton>Iniciar sesión</PrimaryButton>
-                        </Link>
-                    </div>
-                    <div class="flex flex-col col-span-2 lg:col-span-1">
-                        <p>Si no tiene una cuenta, registrese ahora</p>
-                        <Link :href="route('dashboard')">
-                            <PrimaryButton>Registrarse</PrimaryButton>
-                        </Link>
-                    </div>
-                    <div class="flex flex-col col-span-2 lg:col-span-1">
-                        <p>
-                            Si tiene alguna duda sobre el funcionamiento de la
-                            aplicación, visite el apartado de información
-                        </p>
-                        <Link :href="route('dashboard')">
-                            <PrimaryButton>Información</PrimaryButton>
-                        </Link>
-                    </div>
-                </div> -->
                 <div
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-4xl md:max-w-6xl mx-auto pt-8"
                 >
                     <!-- Bloque: Empezar Partida -->
                     <Link
                         class="bg-blue-500 text-white p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition transform hover:scale-105"
-                        :href="route('dashboard')"
+                        :href="route('categorias.seleccionar')"
                     >
                         <h2 class="text-xl font-semibold">Empezar Partida</h2>
                         <p class="mt-2">

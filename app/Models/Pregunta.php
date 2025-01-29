@@ -13,7 +13,7 @@ class Pregunta extends Model
     protected $fillable = ['id_categoria', 'texto', 'tipo'];
 
     public function respuestas() {
-        return $this->hasMany(Respuesta::class);
+        return $this->hasMany(Respuesta::class, 'id_pregunta');
     }
 
     public function categoria() {

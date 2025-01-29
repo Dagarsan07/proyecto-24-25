@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\PreguntaController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,10 @@ Route::get('/categorias/{idC}/preguntas/{idP}/edit', [PreguntaController::class,
 Route::post('/categorias/{idC}/preguntas/{idP}', [PreguntaController::class, 'update'])->name('preguntas.update');
 Route::delete('/categorias/{idC}/preguntas/{idP}', [PreguntaController::class, 'delete'])->name('preguntas.delete');
 /** PreguntaController - End */
+
+/** PartidaController - Init */
+Route::get('/categorias/seleccionar', [PartidaController::class, 'seleccionarCategoria'])->name('categorias.seleccionar');
+Route::post('/partida/iniciar', [PartidaController::class, 'iniciarPartida'])->name('partida.iniciar');
+Route::get('/partida', [PartidaController::class, 'index'])->name('partida');
+Route::post('/partida', [PartidaController::class, 'store'])->name('partida.store');
+/** PartidaController - End */
