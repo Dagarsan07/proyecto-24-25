@@ -1,6 +1,5 @@
 <script setup>
 import { computed, ref } from "vue";
-import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
@@ -52,8 +51,8 @@ console.log(userLogged.value);
                                 </NavLink>
                                 <NavLink
                                     v-if="userLogged"
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('clasificacion')"
+                                    :active="route().current('clasificacion')"
                                 >
                                     Clasificación
                                 </NavLink>
@@ -193,7 +192,7 @@ console.log(userLogged.value);
                             Inicio
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
+                            :href="route('partida')"
                             :active="
                                 route().current('categorias.seleccionar') ||
                                 route().current('partida')
@@ -202,8 +201,8 @@ console.log(userLogged.value);
                             Jugar
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('clasificacion')"
+                            :active="route().current('clasificacion')"
                         >
                             Clasificación
                         </ResponsiveNavLink>

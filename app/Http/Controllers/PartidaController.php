@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PartidaResource;
 use App\Models\Categoria;
 use App\Models\Partida;
 use App\Models\Pregunta;
@@ -67,5 +68,18 @@ class PartidaController extends Controller
         ]);
 
         return redirect()->route('inicio');
+    }
+
+    public function rankingGlobal() {
+        $ranking = PartidaResource::collection(
+            Partida::with(['categoria', 'user'])
+                ->orderByDesc('puntuacion')
+                ->orderBy('tiempo')
+                ->paginate(10)
+        );
+
+        return Inertia::render('Clasificacion', [
+            'ranking' => $ranking,
+        ]);
     }
 }
