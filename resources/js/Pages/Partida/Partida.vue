@@ -1,5 +1,5 @@
 <script setup>
-import { Head, useForm, usePage } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 
@@ -34,13 +34,19 @@ const tiempoFormateado = computed(() => {
 
 const auth = usePage().props.auth;
 const isLogged = computed(() => {
-    return !!page.props.auth.user;
+    if (auth.user != undefined && auth.user != null) {
+        return true;
+    } else {
+        return false;
+    }
 });
 
 // Estado de la pregunta actual
 const preguntaActual = ref(0);
 const respondida = ref(false);
 const esCorrecta = ref(false);
+
+// Estadisticas partida
 const cantAciertos = ref(0);
 const rachaActual = ref(0);
 const rachaMaxima = ref(0);
@@ -74,16 +80,14 @@ const siguientePregunta = () => {
 };
 
 const finalizarPartida = () => {
-    if (isLogged) {
-        const form = useForm({
-            id_user: auth.user.id,
-            id_categoria: props.categoria.id,
-            puntuacion: puntaje.value,
-            tiempo: `00:${tiempoFormateado.value}`,
-        });
-        console.log(form);
-        form.post(route("partida.store"));
-    }
+    const form = useForm({
+        id_user: auth.user.id,
+        id_categoria: props.categoria.id,
+        puntuacion: puntaje.value,
+        tiempo: `00:${tiempoFormateado.value}`,
+    });
+    console.log(form);
+    form.post(route("partida.store"));
 };
 </script>
 <template>
@@ -165,12 +169,30 @@ const finalizarPartida = () => {
                     </p>
                 </div>
                 <button
-                    v-if="respondida && preguntaActual === preguntas.length - 1"
+                    v-if="
+                        respondida &&
+                        preguntaActual === preguntas.length - 1 &&
+                        isLogged
+                    "
                     @click="finalizarPartida"
-                    class="mt-6 px-4 py-2 bg-green-500 text-white rounded-lg"
+                    class="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg"
                 >
                     Ir a inicio
                 </button>
+                <Link
+                    v-else-if="
+                        respondida &&
+                        preguntaActual === preguntas.length - 1 &&
+                        !isLogged
+                    "
+                    :href="route('inicio')"
+                >
+                    <button
+                        class="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    >
+                        Ir a inicio
+                    </button>
+                </Link>
             </div>
         </div>
     </AuthenticatedLayout>
