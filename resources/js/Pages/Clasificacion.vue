@@ -1,12 +1,54 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, router } from "@inertiajs/vue3";
+import { computed, ref } from "vue";
 
 const props = defineProps({
     ranking: Object,
+    categorias: Array,
+    filtros: Object,
 });
 
+props.ranking.meta.links.forEach((link) => {
+    const label = ref(String(link.label));
+    if (label.value.includes("Previous")) {
+        link.label = label.value.replace("Previous", "Anterior");
+    } else if (label.value.includes("Next")) {
+        link.label = label.value.replace("Next", "Siguiente");
+    }
+});
+
+const filtroForm = ref({
+    categoria_id: props.filtros.categoria_id || "",
+    solo_mias: props.filtros.solo_mias || false,
+});
+
+const offset = computed(
+    () => (props.ranking.meta.current_page - 1) * props.ranking.meta.per_page
+);
+
+function aplicarFiltros() {
+    console.log(filtroForm.value);
+    router.get(route("clasificacion"), filtroForm.value, {
+        preserveScroll: true,
+        preserveState: true,
+    });
+}
+
+function limpiarFiltros() {
+    filtroForm.value = { categoria_id: "", solo_mias: false };
+    router.get(
+        route("clasificacion"),
+        {},
+        {
+            preserveScroll: true,
+            preserveState: true,
+        }
+    );
+}
+
 console.log(props.ranking);
+console.log(props.categorias);
 
 function goToPage(url) {
     if (url) {
@@ -25,6 +67,54 @@ function goToPage(url) {
         <div class="py-12">
             <div class="max-w-4xl mx-auto px-4 sm:px-8">
                 <h1 class="text-2xl font-bold mb-6">Clasificación</h1>
+
+                <!-- Filtros -->
+                <form
+                    @submit.prevent="aplicarFiltros"
+                    class="flex flex-wrap gap-4 mb-6 items-end"
+                >
+                    <div>
+                        <label class="block text-sm font-medium mb-1"
+                            >Categoría</label
+                        >
+                        <select
+                            v-model="filtroForm.categoria_id"
+                            class="border rounded px-3 py-2"
+                        >
+                            <option value="">Todas</option>
+                            <option
+                                v-for="cat in categorias"
+                                :key="cat.id"
+                                :value="cat.id"
+                            >
+                                {{ cat.nombre }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center self-center gap-2 mt-6">
+                        <input
+                            type="checkbox"
+                            v-model="filtroForm.solo_mias"
+                            id="solo_mias"
+                        />
+                        <label for="solo_mias">Solo mis partidas</label>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    >
+                        Aplicar
+                    </button>
+                    <button
+                        type="button"
+                        @click="limpiarFiltros"
+                        class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+                    >
+                        Borrar filtros
+                    </button>
+                </form>
 
                 <div class="overflow-x-auto w-full">
                     <table
@@ -46,12 +136,7 @@ function goToPage(url) {
                                 class="border-b hover:bg-gray-50"
                             >
                                 <td class="p-3">
-                                    {{
-                                        (ranking.meta.current_page - 1) *
-                                            ranking.meta.per_page +
-                                        index +
-                                        1
-                                    }}
+                                    {{ offset + index + 1 }}
                                 </td>
                                 <td class="p-3">
                                     {{ partida.usuario ?? "Anónimo" }}
@@ -71,7 +156,7 @@ function goToPage(url) {
                     <Link
                         v-for="link in ranking.meta.links"
                         :key="link.label"
-                        :href="link.url"
+                        :href="link.url ? link.url : 'null'"
                         :disabled="!link.url"
                         @click="goToPage(link.url)"
                         v-html="link.label"

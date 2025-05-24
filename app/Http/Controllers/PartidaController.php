@@ -8,6 +8,7 @@ use App\Models\Categoria;
 use App\Models\Partida;
 use App\Models\Pregunta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PartidaController extends Controller
@@ -70,16 +71,33 @@ class PartidaController extends Controller
         return redirect()->route('inicio');
     }
 
-    public function rankingGlobal() {
+    public function rankingGlobal(Request $request) {
+        $query = Partida::with(['categoria', 'user'])
+            ->select('id', 'id_categoria', 'id_user', 'puntuacion', 'tiempo');
+
+        if ($request->filled('categoria_id')) {
+            $query->where('id_categoria', $request->input('categoria_id'));
+        }
+
+        if ($request->filled('solo_mias') && Auth::check()) {
+            $query->where('id_user', Auth::id());
+        }
+
         $ranking = PartidaResource::collection(
-            Partida::with(['categoria', 'user'])
-                ->orderByDesc('puntuacion')
+            $query->orderByDesc('puntuacion')
                 ->orderBy('tiempo')
                 ->paginate(10)
         );
 
+        $categorias = Categoria::select('id', 'nombre')->get();
+
         return Inertia::render('Clasificacion', [
             'ranking' => $ranking,
+            'categorias' => $categorias,
+            'filtros' => [
+                'categoria_id' => $request->input('categoria_id'),
+                'solo_mias' => $request->boolean('solo_mias')
+            ]
         ]);
     }
 }

@@ -1,7 +1,10 @@
 <script setup>
-import { ref } from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Link, Head } from "@inertiajs/vue3";
+import { Link, Head, usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
+
+const page = usePage();
+const userLogged = computed(() => page.props.auth.user);
 </script>
 <template>
     <Head title="Inicio" />
@@ -38,6 +41,7 @@ import { Link, Head } from "@inertiajs/vue3";
                     <Link
                         class="bg-blue-500 text-white p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition transform hover:scale-105"
                         :href="route('login')"
+                        v-if="!userLogged"
                     >
                         <h2 class="text-xl font-semibold">Iniciar Sesión</h2>
                         <p class="mt-2">
@@ -50,11 +54,36 @@ import { Link, Head } from "@inertiajs/vue3";
                     <Link
                         class="bg-blue-500 text-white p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition transform hover:scale-105"
                         :href="route('register')"
+                        v-if="!userLogged"
                     >
                         <h2 class="text-xl font-semibold">Registrarse</h2>
                         <p class="mt-2">
                             Crea una cuenta para guardar tus progresos y
                             participar en la clasificación global.
+                        </p>
+                    </Link>
+                    <!-- Bloque: Iniciar Sesión -->
+                    <Link
+                        class="bg-blue-500 text-white p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition transform hover:scale-105"
+                        :href="route('clasificacion')"
+                        v-if="userLogged"
+                    >
+                        <h2 class="text-xl font-semibold">Clasificación</h2>
+                        <p class="mt-2">
+                            Consulta las puntuaciones del resto de jugadores y
+                            compite por llegar a la cima
+                        </p>
+                    </Link>
+
+                    <!-- Bloque: Registrarse -->
+                    <Link
+                        class="bg-blue-500 text-white p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition transform hover:scale-105"
+                        :href="route('profile.edit')"
+                        v-if="userLogged"
+                    >
+                        <h2 class="text-xl font-semibold">Perfil</h2>
+                        <p class="mt-2">
+                            Consulta y edita tus datos personales
                         </p>
                     </Link>
 
