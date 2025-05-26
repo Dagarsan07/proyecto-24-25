@@ -9,14 +9,14 @@ const props = defineProps({
     filtros: Object,
 });
 
-props.ranking.meta.links.forEach((link) => {
-    const label = ref(String(link.label));
-    if (label.value.includes("Previous")) {
-        link.label = label.value.replace("Previous", "Anterior");
-    } else if (label.value.includes("Next")) {
-        link.label = label.value.replace("Next", "Siguiente");
+function translateLabel(label) {
+    if (String(label).includes("Previous")) {
+        label = String(label).replace("Previous", "Anterior");
+    } else if (String(label).includes("Next")) {
+        label = String(label).replace("Next", "Siguiente");
     }
-});
+    return label;
+}
 
 const filtroForm = ref({
     categoria_id: props.filtros.categoria_id || "",
@@ -47,6 +47,12 @@ function limpiarFiltros() {
     );
 }
 
+const disableFilterButtons = computed(
+    () =>
+        filtroForm.value.categoria_id == "" &&
+        filtroForm.value.solo_mias == false
+);
+
 console.log(props.ranking);
 console.log(props.categorias);
 
@@ -64,10 +70,9 @@ function goToPage(url) {
     <Head title="Clasificación" />
 
     <AuthenticatedLayout>
-        <div class="py-12">
+        <div class="py-10">
             <div class="max-w-4xl mx-auto px-4 sm:px-8">
                 <h1 class="text-2xl font-bold mb-6">Clasificación</h1>
-
                 <!-- Filtros -->
                 <form
                     @submit.prevent="aplicarFiltros"
@@ -103,16 +108,18 @@ function goToPage(url) {
 
                     <button
                         type="submit"
-                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
+                        :disabled="disableFilterButtons"
                     >
                         Aplicar
                     </button>
                     <button
                         type="button"
                         @click="limpiarFiltros"
-                        class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+                        class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:text-gray-500"
+                        :disabled="disableFilterButtons"
                     >
-                        Borrar filtros
+                        Limpiar filtros
                     </button>
                 </form>
 
@@ -159,7 +166,7 @@ function goToPage(url) {
                         :href="link.url ? link.url : 'null'"
                         :disabled="!link.url"
                         @click="goToPage(link.url)"
-                        v-html="link.label"
+                        v-html="translateLabel(link.label)"
                         :class="[
                             'px-3 py-1 rounded',
                             link.active
